@@ -9,6 +9,7 @@ main_win = tkinter.Tk()
 main_win.title("Weather")
 
 json_response = {}
+has_been_processed = False
 
 def request_data():
     """Returns JSON response from API when given a user's location"""
@@ -22,6 +23,8 @@ def request_data():
 
 
 def render_weather_content(api_response):
+    if has_been_processed == True:
+        # TODO: Delete all the content or just remove the frame and then run the code below
     # Weather icon component
     if api_response["currently"]["icon"] == "clear-day":
         weather_icon = tkinter.Label(information_frame, image=clear_day, bg="white")
@@ -44,7 +47,7 @@ def render_weather_content(api_response):
     elif api_response["currently"]["icon"] == "partly-cloudy-night":
         weather_icon = tkinter.Label(information_frame, image=partly_cloudy_night, bg="white")
     weather_icon.grid(column=0, row=0, rowspan=2, padx=(15,0), pady=(15,0))
-
+    
     # Temperature component
     temperature = tkinter.Label(information_frame, text=str(int(api_response["currently"]["temperature"])) + "°C", font=("Helvetica", 50, "bold"), bg="white")
     temperature.grid(column=1, columnspan=2, row=0, rowspan=2)
@@ -59,6 +62,7 @@ def render_weather_content(api_response):
     #status.grid(column=5, row=0, padx=(10, 0))
     status = tkinter.Label(information_frame, text="Data for: " + geolocation.get_info(location_entry.get()), bg="white", font=("Helvetica", 8))
     status.grid(column=1, row=3, columnspan=2)
+    has_been_processed = True
 
 # Main canvas creation
 canvas = tkinter.Canvas(main_win, height=640, width=960)
